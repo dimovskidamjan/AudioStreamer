@@ -163,6 +163,7 @@ extern NSString * const ASUpdateMetadataNotification;
 								// time)
 	double packetDuration;		// sample rate times frames per packet
 	double lastProgress;		// last calculated progress point
+	UInt32 numberOfChannels;	// Number of audio channels in the stream (1 = mono, 2 = stereo)
 
 #ifdef SHOUTCAST_METADATA
 	BOOL foundIcyStart;
@@ -181,6 +182,9 @@ extern NSString * const ASUpdateMetadataNotification;
 @property (readonly) double duration;
 @property (readwrite) UInt32 bitRate;
 @property (readonly) NSDictionary *httpHeaders;
+@property (readonly) UInt32 numberOfChannels;
+@property (assign, getter=isMeteringEnabled) BOOL meteringEnabled;
+
 
 - (id)initWithURL:(NSURL *)aURL;
 - (void)start;
@@ -192,6 +196,11 @@ extern NSString * const ASUpdateMetadataNotification;
 - (BOOL)isIdle;
 - (void)seekToTime:(double)newSeekTime;
 - (double)calculatedBitRate;
+
+// level metering
+- (float)peakPowerForChannel:(NSUInteger)channelNumber;
+- (float)averagePowerForChannel:(NSUInteger)channelNumber;
+
 
 @end
 
